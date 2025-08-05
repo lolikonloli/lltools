@@ -1,15 +1,15 @@
 [project]
-name = "lltools"
-version = "0.1.0"
-description = "Default template for PDM package"
-authors = [
-    {name = "lolikonloli", email = "lolikonloli@163.com"},
-]
-dependencies = []
-requires-python = "==3.9.*"
-readme = "README.md"
-license = {text = "MIT"}
+    dependencies = ["typer[all]>=0.16.0", "typer[all]>=0.16.0"]
+    name = "lltools"
+    version = "0.1.0"
+    description = "Default template for PDM package"
+    authors = [{ name = "lolikonloli", email = "lolikonloli@163.com" }]
+    requires-python = "==3.9.*"
+    readme = "README.md"
+    license = { text = "MIT" }
 
+    [project.scripts]
+        lltools = "lltools.cli:app"
 
 [tool.pdm]
-distribution = false
+    distribution = false
