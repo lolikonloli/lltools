@@ -125,7 +125,7 @@ def upload_ssh_key(ssh_command: str = typer.Option(..., "--ssh_command", help="u
 
             if not shutil.which("ssh"):
                 raise RuntimeError("❌ Windows 未找到 ssh，请先启用 OpenSSH Client。")
-            subprocess.run(["ssh", f"-p{port}", f"{user}@{ip}", remote_cmd], check=True, timeout=timeout)
+            subprocess.run(["ssh", f"-p{port}", f"{user}@{ip}", remote_cmd], check=True, timeout=120)
         else:
             subprocess.run(["ssh-copy-id", "-i", str(key_path), f"-p{port}", f"{user}@{ip}"], check=True, timeout=120)
 
