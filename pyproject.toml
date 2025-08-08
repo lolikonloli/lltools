@@ -1,7 +1,7 @@
 [project]
     dependencies = ["typer[all]>=0.16.0", "typer[all]>=0.16.0"]
     name = "lltools"
-    version = "0.1.0"
+    version = "0.1.1"
     description = "Default template for PDM package"
     authors = [{ name = "lolikonloli", email = "lolikonloli@163.com" }]
     requires-python = ">=3.8"
@@ -13,3 +13,9 @@
 
 [tool.pdm]
     distribution = false
+
+[tool.yapf]
+    based_on_style = "pep8"
+    spaces_before_comment = 4
+    split_before_logical_operator = true
+    column_limit = 130

@@ -1,5 +1,5 @@
 import typer
-import click  # ✅ 用 Click 获取 shell 类型
+import click
 import platform
 import subprocess
 import sys
@@ -9,9 +9,10 @@ app = typer.Typer(help="lltools: A collection of useful CLI tools.")
 
 
 @app.command()
-def greet(name: str = "World"):
-    """Greet someone by name."""
-    typer.echo(f"Hello, {name}!")
+def update():
+    """update package"""
+    repo_url = "git+https://github.com/lolikonloli/lltools.git"
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "--upgrade", repo_url])
 
 
 @app.command()
@@ -46,28 +47,22 @@ def init():
                 rc_file = os.path.expanduser("~/.bashrc")
                 shell_type = "bash"
             else:
-                typer.echo(
-                    "Unsupported shell. Use lltools --install-completion manually."
-                )
+                typer.echo("Unsupported shell. Use lltools --install-completion manually.")
                 return
 
-            script = subprocess.check_output(
-                ["lltools", "--show-completion", shell_type], text=True)
+            script = subprocess.check_output(["lltools", "--show-completion", shell_type], text=True)
             append_if_missing(rc_file, script, "lltools completion")
             typer.echo(f"Run: source {rc_file} to enable completion")
 
         elif os_type == "Windows":
-            profile = os.path.join(os.environ["USERPROFILE"], "Documents",
-                                   "WindowsPowerShell",
+            profile = os.path.join(os.environ["USERPROFILE"], "Documents", "WindowsPowerShell",
                                    "Microsoft.PowerShell_profile.ps1")
-            script = subprocess.check_output(
-                ["lltools", "--show-completion", "powershell"], text=True)
+            script = subprocess.check_output(["lltools", "--show-completion", "powershell"], text=True)
             append_if_missing(profile, script, "lltools completion")
             typer.echo(f"Restart PowerShell or run: . '{profile}'")
 
         else:
-            typer.echo(
-                "Unsupported OS. Use lltools --install-completion manually.")
+            typer.echo("Unsupported OS. Use lltools --install-completion manually.")
 
     except Exception as e:
         typer.echo(f"Error initializing completion: {e}", err=True)
