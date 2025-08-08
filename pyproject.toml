@@ -1,7 +1,7 @@
 [project]
     dependencies = ["typer[all]>=0.16.0", "typer[all]>=0.16.0"]
     name = "lltools"
-    version = "0.1.1"
+    version = "0.1.2"
     description = "Default template for PDM package"
     authors = [{ name = "lolikonloli", email = "lolikonloli@163.com" }]
     requires-python = ">=3.8"
