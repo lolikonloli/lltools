@@ -102,7 +102,8 @@ def gen_ssh_key():
 @app.command()
 def upload_ssh_key(ssh_command: str = typer.Option(..., "--ssh_command", help="usr@ip:port"),
                    key_path: Path = typer.Option(Path("~/.ssh/id_rsa.pub").expanduser(), "--key-path", help="私钥路径")) -> None:
-
+    os_type = platform.system()
+    
     if ":" in ssh_command:
         user_ip, port = ssh_command.split(":")
         user, ip = user_ip.split("@")
@@ -116,15 +117,13 @@ def upload_ssh_key(ssh_command: str = typer.Option(..., "--ssh_command", help="u
 
     typer.echo(f"目标：{user}@{ip}:{port}")
     try:
-        if os.name == "nt":
+        if os_type == "Windows":
             key_text = key_path.read_text(encoding="utf-8").strip()
             key_escaped = key_text.replace("'", r"'\''")
             remote_cmd = ("umask 077; mkdir -p ~/.ssh; touch ~/.ssh/authorized_keys; "
                           "chmod 700 ~/.ssh; chmod 600 ~/.ssh/authorized_keys; "
                           f"grep -qxF '{key_escaped}' ~/.ssh/authorized_keys || echo '{key_escaped}' >> ~/.ssh/authorized_keys")
 
-            if not shutil.which("ssh"):
-                raise RuntimeError("❌ Windows 未找到 ssh，请先启用 OpenSSH Client。")
             subprocess.run(["ssh", f"-p{port}", f"{user}@{ip}", remote_cmd], check=True, timeout=120)
         else:
             subprocess.run(["ssh-copy-id", "-i", str(key_path), f"-p{port}", f"{user}@{ip}"], check=True, timeout=120)
